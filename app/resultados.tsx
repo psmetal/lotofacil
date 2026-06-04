@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, Button, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ResultadosScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { jogos } = useLocalSearchParams();
   let jogosArray = [];
   try {
@@ -13,14 +15,15 @@ export default function ResultadosScreen() {
   }
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', padding: 24 }}>
-      <Text style={{ fontSize: 24, marginBottom: 16 }}>Resultados da Lotofácil</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#050505' }}>
+      <View style={{ flex: 1, alignItems: 'center', padding: 24 }}>
+      <Text style={{ fontSize: 24, marginBottom: 16, color: '#fff', fontWeight: '700' }}>Resultados da Lotofácil</Text>
       <ScrollView style={{ width: '100%' }}>
         {jogosArray.length === 0 && (
-          <Text style={{ fontSize: 16, textAlign: 'center', marginVertical: 16 }}>Nenhum jogo gerado.</Text>
+          <Text style={{ fontSize: 16, textAlign: 'center', marginVertical: 16, color: '#cfcfcf' }}>Nenhum jogo gerado.</Text>
         )}
         {jogosArray.map((jogo, idx) => (
-          <View key={idx} style={{ marginBottom: 28, alignItems: 'center', backgroundColor: '#f0f7ff', borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 6, elevation: 2 }}>
+          <View key={idx} style={{ marginBottom: 28, alignItems: 'center', backgroundColor: '#121212', borderColor: '#2a2a2a', borderWidth: 1, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.16, shadowRadius: 8, elevation: 3 }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 12, color: '#1976d2' }}>Jogo {idx + 1}</Text>
             <View style={{ flexDirection: 'column', gap: 6 }}>
               {[0, 1, 2].map(linha => (
@@ -33,7 +36,7 @@ export default function ResultadosScreen() {
                         style={{
                           width: 38,
                           height: 38,
-                          backgroundColor: n !== undefined ? '#1976d2' : '#e3e3e3',
+                          backgroundColor: n !== undefined ? '#1976d2' : '#1f1f1f',
                           borderRadius: 10,
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -45,7 +48,7 @@ export default function ResultadosScreen() {
                           elevation: n !== undefined ? 2 : 0,
                         }}
                       >
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: n !== undefined ? '#fff' : '#333' }}>{n !== undefined ? n : ''}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: n !== undefined ? '#fff' : '#777' }}>{n !== undefined ? n : ''}</Text>
                       </View>
                     );
                   })}
@@ -55,7 +58,21 @@ export default function ResultadosScreen() {
           </View>
         ))}
       </ScrollView>
-      <Button title="Voltar" onPress={() => router.back()} />
-    </View>
+
+      <TouchableOpacity
+        onPress={() => router.back()}
+        style={{
+          marginTop: 10,
+          marginBottom: Math.max(insets.bottom, 12),
+          backgroundColor: '#1976d2',
+          paddingVertical: 12,
+          paddingHorizontal: 26,
+          borderRadius: 10,
+        }}
+      >
+        <Text style={{ color: '#fff', fontWeight: '800', fontSize: 16 }}>Voltar</Text>
+      </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }

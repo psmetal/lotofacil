@@ -1,1 +1,0 @@
-// ...existing code de explore.tsx será movido aqui se necessário
